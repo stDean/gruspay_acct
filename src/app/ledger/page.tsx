@@ -1,13 +1,13 @@
 import { DashboardHeader } from "@/components/DashboardHeader";
-import { TransactionContent } from "@/components/TransactionContent";
-import { Coins } from "lucide-react";
+import { LedgerContent } from "@/components/LedgerContent";
+import { ScrollText } from "lucide-react";
 
-export default function Home() {
+export default function LedgerPage() {
   return (
     <main className="flex flex-col h-screen w-full overflow-hidden">
-      <DashboardHeader Icon={Coins} label="Transaction" />
+      <DashboardHeader Icon={ScrollText} label="Ledger" />
       <div className="flex-1 flex justify-center items-center border-2 overflow-y-scroll scrollBar">
-        <TransactionContent />
+        <LedgerContent />
       </div>
     </main>
   );
