@@ -63,7 +63,7 @@ export const TransactionContent = () => {
 
       if (
         !values.cr.amount ||
-        !values.dr.some(item => item.value && item.amount) ||
+        !values.dr.every(item => item.value && item.amount) ||
         !values.narration
       ) {
         toast.error("Error", {
@@ -85,7 +85,7 @@ export const TransactionContent = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 w-[700px] p-8 mt-20 mb-5 border rounded-md  shadow-lg">
+    <div className="flex flex-col gap-4 w-[700px] p-8 mb-7 border rounded-md  shadow-lg">
       <h1 className="font-semibold text-2xl">Post a Transaction</h1>
 
       <div className="flex items-center gap-4">
