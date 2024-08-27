@@ -14,23 +14,23 @@ interface Approver {
   amount: string;
 }
 
-export const LedgerContent = () => {
+export const StatementContent = () => {
   const [isPending, startTransition] = useTransition();
   const [date, setDate] = useState<{ startDate: Date; endDate: Date }>({
     startDate: new Date(),
     endDate: new Date(),
   });
-  const [account, setAccount] = useState<string>("general");
+  const [statement, setStatement] = useState<string>("stmtofpnl");
 
   const handleSubmit = () => {
     startTransition(() => {
       const values = {
-        account,
+        statement,
         startDate: format(date.startDate, "yyyy-MM-dd"),
         endDate: format(date.endDate, "yyyy-MM-dd"),
       };
 
-      if (!values.account || !values.startDate || !values.endDate) {
+      if (!values.statement || !values.startDate || !values.endDate) {
         toast.error("Error", {
           description: "Please fill in all required fields",
         });
@@ -39,43 +39,43 @@ export const LedgerContent = () => {
 
       console.log(values);
       toast.success("Success", {
-        description: "Ledger generated successfully.",
+        description: "Statement generated successfully.",
       });
       setDate({ startDate: new Date(), endDate: new Date() });
-      setAccount("general");
+      setStatement("stmtofpnl");
     });
   };
 
   return (
     <div className="flex flex-col gap-6 w-[600px] p-8 border rounded-md shadow-lg">
-      <h1 className="font-semibold text-2xl">Generate a Ledger</h1>
+      <h1 className="font-semibold text-2xl">Generate Financial Statement</h1>
 
-      <div className="flex items-center">
-        <p className="text-sm font-semibold -mr-3">Select Account</p>
+      <div className="flex items-center justify-between">
+        <p className="text-sm font-semibold w-24">Select Statement</p>
 
         <CustomSelect
           width
-          label="Select Account"
+          label="Select Statement"
           items={
             <>
-              <SelectItem value="general">General</SelectItem>
+              <SelectItem value="stmtofpnl">Statement of profit or loss</SelectItem>
               <SelectItem value="cash">Cash</SelectItem>
             </>
           }
-          handleChange={(value: string) => setAccount(value)}
-          value={account}
+          handleChange={(value: string) => setStatement(value)}
+          value={statement}
         />
       </div>
 
-      <div className="flex gap-6 items-center">
-        <p className="mt-6 w-16 text-sm font-semibold">Period</p>
+      <div className="flex items-center justify-between">
+        <p className="mt-6 w-24 text-sm font-semibold">Period</p>
 
         <div className="flex gap-4 flex-1">
           <div className="flex-1 flex flex-col">
             <span className="text-xs">Start Date</span>
 
             <CustomDate
-              flx
+              flx2
               date={date.startDate}
               handleChange={(day?: Date) =>
                 setDate({ ...date, startDate: day as Date })
@@ -87,7 +87,7 @@ export const LedgerContent = () => {
             <span className="text-xs">End Date</span>
 
             <CustomDate
-              flx
+              flx2
               date={date.endDate}
               handleChange={(day?: Date) =>
                 setDate({ ...date, endDate: day as Date })
@@ -99,7 +99,7 @@ export const LedgerContent = () => {
 
       <div className="flex-1 flex justify-end">
         <Button disabled={isPending} onClick={handleSubmit}>
-          Generate Ledger
+          Generate Statement
         </Button>
       </div>
     </div>

@@ -28,7 +28,7 @@ export const CustomSelect = ({
       value={value}
       onValueChange={(value: string, id?: number) => handleChange(value, id!)}
     >
-      <SelectTrigger className={cn({ "w-[280px]": width })}>
+      <SelectTrigger className={cn({ "w-full": width })}>
         <SelectValue placeholder="Select a fruit" />
       </SelectTrigger>
       <SelectContent>
