@@ -8,10 +8,12 @@ import {
 } from "@/components/ui/sheet";
 import { AccountsLinks, InvoiceLink } from "@/constants";
 import { cn } from "@/lib/utils";
-import { LucideIcon } from "lucide-react";
+import { LogOut, LucideIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getBusiness, deleteBusiness } from "@/app/actions/businessActions";
 
 const MobileLink = ({
   label,
@@ -43,6 +45,19 @@ const MobileLink = ({
 };
 
 export const MobileNav = () => {
+  const router = useRouter();
+  const [email, setEmail] = useState<string>("");
+
+  const getEmail = async () => {
+    const { email } = (await getBusiness()) ?? false;
+    setEmail(email);
+  };
+
+  console.log({ email });
+  useEffect(() => {
+    getEmail();
+  }, [getEmail]);
+
   return (
     <section className="lg:hidden flex justify-between items-center border-b border-[#F9AE19] bg-white p-3 px-6">
       <div className="justify-center items-center w-40">
@@ -69,32 +84,51 @@ export const MobileNav = () => {
           <SheetContent side="right" className="border-none bg-white">
             <img src="/logo.png" className="w-36" alt="Horizon logo" />
 
-            <div className="flex h-[calc(100vh-72px)] flex-col justify-between overflow-y-auto;">
+            <div className="flex h-[calc(100vh-72px)] flex-col overflow-hidden">
               <SheetClose asChild>
-                <nav className="flex h-full flex-col gap-6 pt-16 text-white">
-                  <div className="flex flex-col gap-2 -mt-40 flex-1 justify-center self-start w-full">
-                    <div className="text-[13px] text-[#98A2B3] mt-4">
-                      <p className="my-2 text-sm font-medium">Accounting</p>
-                      {AccountsLinks.map(({ label, link, Icon }) => (
-                        <MobileLink
-                          key={label}
-                          Icon={Icon}
-                          label={label}
-                          link={link}
-                        />
-                      ))}
+                <nav className="flex h-full flex-col gap-6">
+                  <div className="flex flex-col gap-2 mt-5 flex-1 justify-between self-start w-full">
+                    <div>
+                      <div className="text-[13px] text-[#98A2B3] mt-4">
+                        <p className="my-2 text-sm font-medium">Accounting</p>
+                        {AccountsLinks.map(({ label, link, Icon }) => (
+                          <MobileLink
+                            key={label}
+                            Icon={Icon}
+                            label={label}
+                            link={link}
+                          />
+                        ))}
+                      </div>
+
+                      <div className="text-[13px] text-[#98A2B3] mt-4">
+                        <p className="my-2 text-sm font-medium">Invoicing</p>
+                        {InvoiceLink.map(({ label, link, Icon }) => (
+                          <MobileLink
+                            key={label}
+                            Icon={Icon}
+                            label={label}
+                            link={link}
+                          />
+                        ))}
+                      </div>
                     </div>
 
-                    <div className="text-[13px] text-[#98A2B3] mt-4">
-                      <p className="my-2 text-sm font-medium">Invoicing</p>
-                      {InvoiceLink.map(({ label, link, Icon }) => (
-                        <MobileLink
-                          key={label}
-                          Icon={Icon}
-                          label={label}
-                          link={link}
-                        />
-                      ))}
+                    <div className="flex justify-between items-center w-full">
+                      <div className="flex items-center gap-2">
+                        <div>
+                          <p className="font-semibold">Gruspay Inc.</p>
+                          <p className="text-sm">{email}</p>
+                        </div>
+                      </div>
+
+                      <LogOut
+                        className="text-red-500 cursor-pointer h-6 w-6"
+                        onClick={async () => {
+                          await deleteBusiness();
+                          router.push("/sign-in");
+                        }}
+                      />
                     </div>
                   </div>
                 </nav>

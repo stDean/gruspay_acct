@@ -7,7 +7,7 @@ import { SelectItem } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CirclePlus, X } from "lucide-react";
-import { useState, useTransition } from "react";
+import { ChangeEvent, useState, useTransition } from "react";
 import { toast } from "sonner";
 import { Input } from "./ui/input";
 
@@ -17,6 +17,27 @@ interface Approver {
   amount: string;
   desc: string;
 }
+
+const Inputs = ({
+  label,
+  val,
+  handleChange,
+}: {
+  label: string;
+  val: string;
+  handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
+}) => {
+  return (
+    <div className="flex-1">
+      <span className="text-xs">{label}</span>
+      <Input
+        value={val}
+        onChange={handleChange}
+        className="!h-9 w-[295px] md:w-fit"
+      />
+    </div>
+  );
+};
 
 export const TransactionContent = () => {
   const [isPending, startTransition] = useTransition();
@@ -88,8 +109,8 @@ export const TransactionContent = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 w-[700px] p-8 mb-7 border rounded-md  shadow-lg">
-      <h1 className="font-semibold text-2xl">Post a Transaction</h1>
+    <div className="flex flex-col gap-4 m-fit md:w-[700px] p-4 md:p-8 mb-16 border rounded-md shadow-lg h-fit md:h-fit">
+      <h1 className="font-semibold text-xl md:text-2xl">Post a Transaction</h1>
 
       <div className="flex items-center gap-4">
         <p className="w-7 text-sm font-semibold">Date</p>
@@ -100,14 +121,15 @@ export const TransactionContent = () => {
         />
       </div>
 
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-4 md:items-center">
         <p className="mt-6 w-7 text-sm font-semibold">Cr</p>
 
-        <div className="flex gap-4 flex-1">
+        <div className="flex flex-col md:flex-row gap-4 flex-1">
           <div className="flex-1">
             <span className="text-xs">Account</span>
 
             <CustomSelect
+              width2
               label="Select Account"
               items={
                 <>
@@ -120,38 +142,33 @@ export const TransactionContent = () => {
             />
           </div>
 
-          <div className="flex-1">
-            <span className="text-xs">Amount</span>
-            <Input
-              value={cr.Amount}
-              onChange={e => setCr({ ...cr, Amount: e.target.value })}
-              className="!h-9"
-            />
-          </div>
+          <Inputs
+            label="Amount"
+            val={cr.Amount}
+            handleChange={e => setCr({ ...cr, Amount: e.target.value })}
+          />
 
-          <div className="flex-1">
-            <span className="text-xs">Description</span>
-            <Input
-              value={cr.Amount}
-              onChange={e => setCr({ ...cr, desc: e.target.value })}
-              className="!h-9"
-            />
-          </div>
+          <Inputs
+            label="Description"
+            val={cr.desc}
+            handleChange={e => setCr({ ...cr, desc: e.target.value })}
+          />
         </div>
       </div>
 
       {dr
         .filter((_, idx: number) => idx <= 4)
         .map(({ id, value, amount, desc }: Approver) => (
-          <div className="flex gap-4 items-center" key={`${id}-${value}`}>
+          <div className="flex gap-4 md:items-center" key={`${id}-${value}`}>
             <p className="mt-6 w-7 text-sm font-semibold">Dr</p>
 
-            <div className="flex gap-4 flex-1">
+            <div className="flex flex-col md:flex-row gap-4 flex-1">
               <div className="flex-1">
                 <span className="text-xs">Account</span>
 
                 <CustomSelect
                   label="Select Account"
+                  width2
                   items={
                     <>
                       <SelectItem value="machinery">Machinery</SelectItem>
@@ -163,28 +180,22 @@ export const TransactionContent = () => {
                 />
               </div>
 
-              <div className="flex-1">
-                <span className="text-xs">Amount</span>
-                <Input
-                  value={amount}
-                  onChange={e => handleAmountChange(id, e.target.value)}
-                  className="!h-9"
-                />
-              </div>
+              <Inputs
+                label="Amount"
+                val={amount}
+                handleChange={e => handleAmountChange(id, e.target.value)}
+              />
 
-              <div className="flex-1">
-                <span className="text-xs">Description</span>
-                <Input
-                  value={desc}
-                  onChange={e => handleDescChange(id, e.target.value)}
-                  className="!h-9"
-                />
-              </div>
+              <Inputs
+                label="Description"
+                val={desc}
+                handleChange={e => handleDescChange(id, e.target.value)}
+              />
             </div>
 
             {id >= 2 && (
               <X
-                className="h-5 w-5 -mx-4 cursor-pointer text-red-500  mt-5"
+                className="h-5 w-5 -mr-5 md:-mx-3 cursor-pointer text-red-500 mt-[110px] md:mt-5"
                 onClick={() => {
                   // remove the value from the dr array
                   setDr(prevDr => prevDr.filter(dr => dr.id !== id));

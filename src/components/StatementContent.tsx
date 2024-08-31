@@ -47,11 +47,11 @@ export const StatementContent = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6 w-[600px] p-8 border rounded-md shadow-lg">
-      <h1 className="font-semibold text-2xl">Generate Financial Statement</h1>
+    <div className="flex flex-col gap-6 md:w-[600px] p-5 -mt-20 md:mt-0 md:p-8 border rounded-md shadow-lg">
+      <h1 className="font-semibold text-xl md:text-2xl">Generate Financial Statement</h1>
 
-      <div className="flex items-center justify-between">
-        <p className="text-sm font-semibold w-24">Select Statement</p>
+      <div className="flex items-center md:justify-between">
+        <p className="text-xs md:text-sm font-semibold w-24">Select Statement</p>
 
         <CustomSelect
           width
@@ -67,10 +67,10 @@ export const StatementContent = () => {
         />
       </div>
 
-      <div className="flex items-center justify-between">
-        <p className="mt-6 w-24 text-sm font-semibold">Period</p>
+      <div className="flex items-start md:items-center justify-between">
+        <p className="mt-6 w-24 text-xs md:text-sm font-semibold">Period</p>
 
-        <div className="flex gap-4 flex-1">
+        <div className="flex flex-col md:flex-row gap-4 flex-1">
           <div className="flex-1 flex flex-col">
             <span className="text-xs">Start Date</span>
 

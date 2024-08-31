@@ -40,7 +40,7 @@ function Inputs({
             type={type}
             value={val}
             onChange={handleInputChange}
-            className="!h-9 w-[290px]"
+            className="!h-9 lg:w-[290px] w-[250px]"
             disabled={disabled}
           />
         </div>
@@ -106,13 +106,13 @@ export const NewInvoiceForm = () => {
 
   return (
     <div className="flex flex-col gap-4 ">
-      <h1 className="font-semibold text-2xl">New Invoice</h1>
+      <h1 className="font-semibold  text-xl md:text-2xl">New Invoice</h1>
 
       <div className="gap-4 grid grid-cols-12 ">
         <p className="text-sm font-semibold col-span-3 self-center">Date</p>
 
         <div className="col-span-9">
-          <CustomDate date={date} handleChange={e => setDate(e as Date)} />
+          <CustomDate flx3 date={date} handleChange={e => setDate(e as Date)} />
         </div>
       </div>
 

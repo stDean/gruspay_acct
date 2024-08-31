@@ -35,7 +35,7 @@ export const NavLink = ({
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild className="xl:hidden">
-            <Icon className="h-7 w-7" />
+            <Icon className="h-6 w-6" />
           </TooltipTrigger>
           <TooltipContent align="center" side="bottom">
             <p>{label}</p>

@@ -14,11 +14,13 @@ export const CustomDate = ({
   handleChange,
   flx,
   flx2,
+  flx3,
 }: {
   date?: Date;
   handleChange: (day?: Date) => void;
   flx?: boolean;
   flx2?: boolean;
+  flx3?: boolean;
 }) => {
   return (
     <Popover>
@@ -29,6 +31,7 @@ export const CustomDate = ({
             "text-muted-foreground": !date,
             "w-[225px]": flx,
             "w-[219px]": flx2,
+            "lg:w-[290px] w-[250px]": flx3,
           })}
         >
           {date ? format(date, "PPP") : <span>Pick a date</span>}

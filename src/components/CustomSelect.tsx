@@ -16,11 +16,13 @@ export const CustomSelect = ({
   label,
   handleChange,
   width,
+  width2,
 }: {
   items: ReactNode;
   value: string;
   label: string;
   width?: boolean;
+  width2?: boolean;
   handleChange: (value: string, id?: number) => void;
 }) => {
   return (
@@ -28,7 +30,12 @@ export const CustomSelect = ({
       value={value}
       onValueChange={(value: string, id?: number) => handleChange(value, id!)}
     >
-      <SelectTrigger className={cn({ "w-full": width })}>
+      <SelectTrigger
+        className={cn({
+          "w-[220px] md:w-full": width,
+          "w-[295px] md:w-full": width2,
+        })}
+      >
         <SelectValue placeholder="Select a fruit" />
       </SelectTrigger>
       <SelectContent>

@@ -8,7 +8,7 @@ export default function Page() {
           src="/logo.png"
           alt="logo"
           className="w-44 cursor-pointer"
-          // onClick={() => router.push("/")}
+          // onClick={() => router.push("/dashboard")}
         />
       </div>
 
