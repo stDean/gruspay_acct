@@ -4,6 +4,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import { SideNav } from "@/components/SideNav";
 import { constructMetadata } from "@/lib/utils";
+import { MobileNav } from "@/components/MobileNav";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,12 +18,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <main className="flex h-screen w-full bg-[#EAECF0] overflow-hidden">
-          <div className="w-[365px] p-4 max-h-[98%] overflow-hidden bg-white m-2 rounded-sm shadow-lg">
+        <main className="flex flex-col lg:flex-row h-screen w-full bg-[#EAECF0] overflow-hidden">
+          <div className="xl:w-[365px] hidden lg:block p-4 max-h-[98%] overflow-hidden bg-white m-2 rounded-sm shadow-lg">
             <SideNav />
           </div>
 
-          <div className="size-full max-h-[98%] overflow-hidden bg-white m-2 mr-3 rounded-sm shadow-lg">
+          <MobileNav />
+
+          <div className="size-full max-h-[98%] overflow-hidden bg-white lg:m-2 lg:mr-3 rounded-sm shadow-lg">
             {children}
           </div>
         </main>

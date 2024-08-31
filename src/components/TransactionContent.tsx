@@ -7,36 +7,34 @@ import { SelectItem } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { CirclePlus, X } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
 
 interface Approver {
   id: number;
   value: string;
   amount: string;
+  desc: string;
 }
 
 export const TransactionContent = () => {
-  const router = useRouter();
-
   const [isPending, startTransition] = useTransition();
   const [date, setDate] = useState<Date>(new Date());
   const [narration, setNarration] = useState("");
-  const [cr, setCr] = useState<{ cr: string; Amount: string }>({
+  const [cr, setCr] = useState<{ cr: string; Amount: string; desc: string }>({
     cr: "cash",
     Amount: "",
+    desc: "",
   });
   const [dr, setDr] = useState<Array<Approver>>([
-    { id: 1, value: "machinery", amount: "" },
+    { id: 1, value: "machinery", amount: "", desc: "" },
   ]);
 
   const handleAddDr = () => {
     setDr(prevDr => [
       ...prevDr,
-      { id: prevDr.length + 1, value: "machinery", amount: "" },
+      { id: prevDr.length + 1, value: "machinery", amount: "", desc: "" },
     ]);
   };
 
@@ -48,15 +46,20 @@ export const TransactionContent = () => {
     setDr(dr => dr.map(item => (item.id === id ? { ...item, amount } : item)));
   };
 
+  const handleDescChange = (id: number, desc: string) => {
+    setDr(dr => dr.map(item => (item.id === id ? { ...item, desc } : item)));
+  };
+
   const handleSubmit = () => {
     startTransition(() => {
       const values = {
         date: format(date, "yyyy-MM-dd"),
-        cr: { cr: cr.cr, amount: cr.Amount },
+        cr: { cr: cr.cr, amount: cr.Amount, desc: cr.desc },
         dr: dr.map(item => ({
           id: item.id,
           value: item.value,
           amount: item.amount,
+          desc: item.desc,
         })),
         narration: narration,
       };
@@ -77,8 +80,8 @@ export const TransactionContent = () => {
         description: "Transaction has been posted successfully.",
       });
 
-      setCr({ cr: "cash", Amount: "" });
-      setDr([{ id: 1, value: "machinery", amount: "" }]);
+      setCr({ cr: "cash", Amount: "", desc: "" });
+      setDr([{ id: 1, value: "machinery", amount: "", desc: "" }]);
       setNarration("");
       setDate(new Date());
     });
@@ -125,12 +128,21 @@ export const TransactionContent = () => {
               className="!h-9"
             />
           </div>
+
+          <div className="flex-1">
+            <span className="text-xs">Description</span>
+            <Input
+              value={cr.Amount}
+              onChange={e => setCr({ ...cr, desc: e.target.value })}
+              className="!h-9"
+            />
+          </div>
         </div>
       </div>
 
       {dr
         .filter((_, idx: number) => idx <= 4)
-        .map(({ id, value, amount }: Approver) => (
+        .map(({ id, value, amount, desc }: Approver) => (
           <div className="flex gap-4 items-center" key={`${id}-${value}`}>
             <p className="mt-6 w-7 text-sm font-semibold">Dr</p>
 
@@ -159,6 +171,15 @@ export const TransactionContent = () => {
                   className="!h-9"
                 />
               </div>
+
+              <div className="flex-1">
+                <span className="text-xs">Description</span>
+                <Input
+                  value={desc}
+                  onChange={e => handleDescChange(id, e.target.value)}
+                  className="!h-9"
+                />
+              </div>
             </div>
 
             {id >= 2 && (
@@ -184,17 +205,6 @@ export const TransactionContent = () => {
       >
         <CirclePlus className="h-3 w-3" strokeWidth={3} />
         <p>Add Account</p>
-      </div>
-
-      <div className="flex-1">
-        <p className="text-sm font-semibold">Narration</p>
-
-        <Textarea
-          placeholder="Narration here..."
-          className="w-full h-20"
-          value={narration}
-          onChange={e => setNarration(e.target.value)}
-        />
       </div>
 
       <div className="flex-1 flex justify-end">

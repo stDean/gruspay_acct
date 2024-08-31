@@ -6,7 +6,7 @@ export default function LedgerPage() {
   return (
     <main className="flex flex-col h-screen w-full overflow-hidden">
       <DashboardHeader Icon={ScrollText} label="Ledger" />
-      <div className="flex-1 flex justify-center items-center overflow-y-scroll scrollBar">
+      <div className="flex-1 flex justify-center items-center">
         <LedgerContent />
       </div>
     </main>

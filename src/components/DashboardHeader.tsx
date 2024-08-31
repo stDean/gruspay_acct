@@ -10,7 +10,7 @@ export const DashboardHeader = ({
   label: string;
 }) => {
   return (
-    <div className="sticky top-0 left-0 right-0 border-b border-[#F9AE19] flex justify-between items-center overflow-hidden z-50 bg-[#FCFCFD]">
+    <div className="sticky top-0 left-0 right-0 border-b border-[#F9AE19] justify-between items-center overflow-hidden z-50 bg-[#FCFCFD] hidden lg:flex">
       <div className="py-3 px-4 flex justify-center items-center gap-4">
         <Icon className="h-5 w-5" />
         <p className="">{label}</p>
