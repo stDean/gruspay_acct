@@ -47,7 +47,7 @@ function ComboboxDemo({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="justify-between"
+          className="justify-between text-xs"
         >
           {value
             ? frameWorks.find(framework => framework.value === value)?.label
@@ -70,7 +70,7 @@ function ComboboxDemo({
                     setValue(currentValue === value ? "" : currentValue);
                     setOpen(false);
                   }}
-                  className="text-sm"
+                  className="text-xs"
                 >
                   <Check
                     className={cn(
