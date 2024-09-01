@@ -1,7 +1,6 @@
 "use client";
 
 import { CustomDate } from "@/components/CustomDate";
-import { CustomSelect } from "@/components/CustomSelect";
 import { Button } from "@/components/ui/button";
 import {
   Command,
@@ -17,7 +16,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { SelectItem } from "@/components/ui/select";
 import { AccountDrop } from "@/constants";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -47,16 +45,18 @@ function ComboboxDemo({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="justify-between text-xs"
+          className="justify-between text-xs px-2"
         >
-          {value
-            ? frameWorks.find(framework => framework.value === value)?.label
-            : "Select framework..."}
+          <span className="truncate">
+            {value
+              ? frameWorks.find(framework => framework.value === value)?.label
+              : "Select framework..."}
+          </span>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[295px] md:w-[190px] p-0 ">
+      <PopoverContent className="w-[295px] md:w-[190px] p-0">
         <Command>
           <CommandInput placeholder="Search account..." />
           <CommandList>
@@ -205,8 +205,8 @@ export const TransactionContent = () => {
       <div className="flex gap-4 md:items-center">
         <p className="mt-6 w-7 text-sm font-semibold">Cr</p>
 
-        <div className="flex flex-col md:flex-row gap-2 flex-1">
-          <div className="flex-1 flex flex-col gap-1">
+        <div className="flex flex-col md:items-center md:flex-row gap-2 flex-1">
+          <div className="flex-1 flex flex-col gap-1 mt-1">
             <span className="text-xs">Account</span>
 
             <ComboboxDemo
@@ -236,8 +236,8 @@ export const TransactionContent = () => {
           <div className="flex gap-4 md:items-center" key={`${id}-${value}`}>
             <p className="mt-6 w-7 text-sm font-semibold">Dr</p>
 
-            <div className="flex flex-col md:flex-row gap-2 flex-1">
-              <div className="flex-1 flex flex-col gap-1">
+            <div className="flex flex-col md:items-center md:flex-row gap-2 flex-1">
+              <div className="flex-1 flex flex-col gap-1 mt-1">
                 <span className="text-xs">Account</span>
 
                 <ComboboxDemo
