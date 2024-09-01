@@ -3,13 +3,91 @@
 import { CustomDate } from "@/components/CustomDate";
 import { CustomSelect } from "@/components/CustomSelect";
 import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Input } from "@/components/ui/input";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { SelectItem } from "@/components/ui/select";
+import { AccountDrop } from "@/constants";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { CirclePlus, X } from "lucide-react";
+import { Check, ChevronsUpDown, CirclePlus, X } from "lucide-react";
 import { ChangeEvent, useState, useTransition } from "react";
 import { toast } from "sonner";
-import { Input } from "./ui/input";
+
+function ComboboxDemo({
+  value,
+  setValue,
+  acct,
+}: {
+  value: string;
+  setValue: (currentValue: string) => void;
+  acct: string[];
+}) {
+  const [open, setOpen] = useState(false);
+  const frameWorks = acct.map(item => ({ value: item, label: item }));
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger
+        asChild
+        className="w-[295px] md:w-[190px] overflow-hidden"
+      >
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="justify-between"
+        >
+          {value
+            ? frameWorks.find(framework => framework.value === value)?.label
+            : "Select framework..."}
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+
+      <PopoverContent className="w-[295px] md:w-[190px] p-0 ">
+        <Command>
+          <CommandInput placeholder="Search account..." />
+          <CommandList>
+            <CommandEmpty>No account found.</CommandEmpty>
+            <CommandGroup>
+              {frameWorks.map(framework => (
+                <CommandItem
+                  key={framework.value}
+                  value={framework.value}
+                  onSelect={currentValue => {
+                    setValue(currentValue === value ? "" : currentValue);
+                    setOpen(false);
+                  }}
+                  className="text-sm"
+                >
+                  <Check
+                    className={cn(
+                      "mr-1 h-4 w-4",
+                      value === framework.value ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  {framework.label}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 interface Approver {
   id: number;
@@ -33,7 +111,7 @@ const Inputs = ({
       <Input
         value={val}
         onChange={handleChange}
-        className="!h-9 w-[295px] md:w-fit"
+        className="!h-9 w-[295px] md:w-[190px]"
       />
     </div>
   );
@@ -44,18 +122,18 @@ export const TransactionContent = () => {
   const [date, setDate] = useState<Date>(new Date());
   const [narration, setNarration] = useState("");
   const [cr, setCr] = useState<{ cr: string; Amount: string; desc: string }>({
-    cr: "cash",
+    cr: AccountDrop[0],
     Amount: "",
     desc: "",
   });
   const [dr, setDr] = useState<Array<Approver>>([
-    { id: 1, value: "machinery", amount: "", desc: "" },
+    { id: 1, value: AccountDrop[0], amount: "", desc: "" },
   ]);
 
   const handleAddDr = () => {
     setDr(prevDr => [
       ...prevDr,
-      { id: prevDr.length + 1, value: "machinery", amount: "", desc: "" },
+      { id: prevDr.length + 1, value: AccountDrop[0], amount: "", desc: "" },
     ]);
   };
 
@@ -71,6 +149,8 @@ export const TransactionContent = () => {
     setDr(dr => dr.map(item => (item.id === id ? { ...item, desc } : item)));
   };
 
+  console.log({ a: cr.cr, b: dr.map(item => item.value) });
+
   const handleSubmit = () => {
     startTransition(() => {
       const values = {
@@ -85,10 +165,11 @@ export const TransactionContent = () => {
         narration: narration,
       };
 
+      console.log({ first: values });
+
       if (
         !values.cr.amount ||
-        !values.dr.every(item => item.value && item.amount) ||
-        !values.narration
+        !values.dr.every(item => item.value && item.amount)
       ) {
         toast.error("Error", {
           description: "Please fill in all required fields",
@@ -101,8 +182,8 @@ export const TransactionContent = () => {
         description: "Transaction has been posted successfully.",
       });
 
-      setCr({ cr: "cash", Amount: "", desc: "" });
-      setDr([{ id: 1, value: "machinery", amount: "", desc: "" }]);
+      setCr({ cr: AccountDrop[0], Amount: "", desc: "" });
+      setDr([{ id: 1, value: AccountDrop[0], amount: "", desc: "" }]);
       setNarration("");
       setDate(new Date());
     });
@@ -124,21 +205,14 @@ export const TransactionContent = () => {
       <div className="flex gap-4 md:items-center">
         <p className="mt-6 w-7 text-sm font-semibold">Cr</p>
 
-        <div className="flex flex-col md:flex-row gap-4 flex-1">
-          <div className="flex-1">
+        <div className="flex flex-col md:flex-row gap-2 flex-1">
+          <div className="flex-1 flex flex-col gap-1">
             <span className="text-xs">Account</span>
 
-            <CustomSelect
-              width2
-              label="Select Account"
-              items={
-                <>
-                  <SelectItem value="cash">Cash</SelectItem>
-                  <SelectItem value="banana">Banana</SelectItem>
-                </>
-              }
-              handleChange={value => setCr({ ...cr, cr: value })}
+            <ComboboxDemo
+              acct={AccountDrop}
               value={cr.cr}
+              setValue={value => setCr({ ...cr, cr: value })}
             />
           </div>
 
@@ -162,21 +236,14 @@ export const TransactionContent = () => {
           <div className="flex gap-4 md:items-center" key={`${id}-${value}`}>
             <p className="mt-6 w-7 text-sm font-semibold">Dr</p>
 
-            <div className="flex flex-col md:flex-row gap-4 flex-1">
-              <div className="flex-1">
+            <div className="flex flex-col md:flex-row gap-2 flex-1">
+              <div className="flex-1 flex flex-col gap-1">
                 <span className="text-xs">Account</span>
 
-                <CustomSelect
-                  label="Select Account"
-                  width2
-                  items={
-                    <>
-                      <SelectItem value="machinery">Machinery</SelectItem>
-                      <SelectItem value="tax">Tax</SelectItem>
-                    </>
-                  }
+                <ComboboxDemo
+                  acct={AccountDrop}
                   value={value}
-                  handleChange={value => handleChange(id, value)}
+                  setValue={value => handleChange(id, value)}
                 />
               </div>
 

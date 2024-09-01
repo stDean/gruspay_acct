@@ -56,11 +56,11 @@ export const Onboard = () => {
         }
         console.log({ userData });
         await storeBusiness({ email: userData.email });
+        router.push("/transaction");
         toast.success("Success", {
           description: "Account created successfully",
         });
 
-        router.push("/transaction");
         form.reset();
       }
 

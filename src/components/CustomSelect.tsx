@@ -33,7 +33,7 @@ export const CustomSelect = ({
       <SelectTrigger
         className={cn({
           "w-[220px] md:w-full": width,
-          "w-[295px] md:w-full": width2,
+          "w-[295px] md:w-[170px] text-xs": width2,
         })}
       >
         <SelectValue placeholder="Select a fruit" />

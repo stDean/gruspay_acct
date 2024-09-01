@@ -17,10 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <main>
-          {children}
-        </main>
+      <body className={`${inter.className} scrollBar`}>
+        <main>{children}</main>
 
         <Toaster position="bottom-right" richColors />
       </body>
