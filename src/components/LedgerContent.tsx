@@ -47,7 +47,7 @@ export const LedgerContent = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6 md:w-[600px] p-5 -mt-20 md:mt-0 md:p-8 border rounded-md shadow-lg">
+    <div className="flex h-fit flex-col gap-6 md:w-[600px] p-5 -mt-20 md:mt-0 md:p-8 border rounded-md shadow-lg">
       <h1 className="font-semibold text-xl md:text-2xl">Generate a Ledger</h1>
 
       <div className="flex items-center md:justify-between">

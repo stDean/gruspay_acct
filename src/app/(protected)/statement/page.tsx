@@ -6,7 +6,7 @@ export default function StatementPage() {
   return (
     <main className="flex flex-col h-screen w-full overflow-hidden">
       <DashboardHeader Icon={Receipt} label="Financial Statement" />
-      <div className="flex-1 flex justify-center items-center overflow-y-scroll scrollBar">
+      <div className="flex-1 flex justify-center mt-32 md:-mt-40 lg:mt-0 md:items-center">
         <StatementContent />
       </div>
     </main>
