@@ -114,7 +114,7 @@ export const MobileNav = () => {
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-center w-full mb-5">
+                    <div className="flex justify-between items-center w-full mb-20">
                       <div className="flex items-center gap-2">
                         <div>
                           <p className="font-semibold">Gruspay Inc.</p>
